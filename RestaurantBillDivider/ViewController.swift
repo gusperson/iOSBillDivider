@@ -14,7 +14,16 @@ class ViewController: UIViewController,UITextFieldDelegate {
     //MARK:  Properties
 
     @IBOutlet var mealPrice: UITextField!
+
+    @IBOutlet var tenPercentTip: UILabel!
+    @IBOutlet var fifteenPercentTip: UILabel!
     
+    @IBOutlet var twentyPercentTip: UILabel!
+    
+    @IBOutlet var taxTotal: UILabel!
+    
+    
+    @IBOutlet var finalBillAmount: UILabel!
     
     
     override func viewDidLoad() {
@@ -35,16 +44,16 @@ class ViewController: UIViewController,UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         mealPrice.text = textField.text
     }
-   /* func textFieldDidEndEditing(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let dotCount = textField.text!.components(separatedBy: ".").count - 1
-        
-        if dotCount > 0 && string == "."{
-            return false
-        }
-        
-        return true
 
-    }*/
 
+    //MARK:  Actions
+    
+    @IBAction func calculatePricePressed(_ sender: UIButton) {
+        var tax = 0.0725
+        var tip = 0.1
+        finalBillAmount.text = "Working!"
+    }
+    
+    
 }
 

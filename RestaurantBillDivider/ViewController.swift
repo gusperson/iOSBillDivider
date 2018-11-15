@@ -14,15 +14,10 @@ class ViewController: UIViewController,UITextFieldDelegate {
     //MARK:  Properties
 
     @IBOutlet var mealPrice: UITextField!
-
     @IBOutlet var tenPercentTip: UILabel!
     @IBOutlet var fifteenPercentTip: UILabel!
-    
     @IBOutlet var twentyPercentTip: UILabel!
-    
     @IBOutlet var taxTotal: UILabel!
-    
-    
     @IBOutlet var finalBillAmount: UILabel!
     
     
@@ -47,11 +42,50 @@ class ViewController: UIViewController,UITextFieldDelegate {
 
 
     //MARK:  Actions
+    func convertCurrencyToDouble(input: String) -> Double? {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale.current
+        
+        return numberFormatter.number(from: input)?.doubleValue
+    }
+    
+    func convertDoubleToCurrency(amount: Double) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale.current
+        
+        return numberFormatter.string(from: NSNumber(value: amount))!
+    }
+    
+    func calculateTip(subtotal: Double, tipPercentage: Double) -> Double {
+        //calculate tip
+        return subtotal * (tipPercentage / 100)
+    }
+    
+    func calculateTax(subtotal: Double, taxPercentage: Double) -> Double {
+        return  subtotal * (taxPercentage / 100)
+    }
     
     @IBAction func calculatePricePressed(_ sender: UIButton) {
-        var tax = 0.0725
-        var tip = 0.1
-        finalBillAmount.text = "Working!"
+        //finalBillAmount.text = "Working!"
+        guard let mealPriceDouble = convertCurrencyToDouble(input: mealPrice.text!) else{
+            print("invalid input!")
+            return
+        }
+        
+        let tip1 = calculateTip(subtotal: mealPriceDouble, tipPercentage: 10.0)
+        let tip2 = calculateTip(subtotal: mealPriceDouble, tipPercentage: 15.0)
+        let tip3 = calculateTip(subtotal: mealPriceDouble, tipPercentage: 20.0)
+        let tax = calculateTax(subtotal: mealPriceDouble, taxPercentage: 7.25)
+        
+        tenPercentTip.text = String(convertDoubleToCurrency(amount: tip1))
+        fifteenPercentTip.text = String(convertDoubleToCurrency(amount: tip2))
+        twentyPercentTip.text = String(convertDoubleToCurrency(amount: tip3))
+        taxTotal.text = String(convertDoubleToCurrency(amount: tax))
+        
+        finalBillAmount.text = String(convertDoubleToCurrency(amount: tip1 + tax + mealPriceDouble))
+
     }
     
     
